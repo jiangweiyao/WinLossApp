@@ -1,0 +1,12 @@
+name: WinLoss
+title: WinLoss
+username:
+account: jiangwei
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 626568
+bundleId: 1797227
+url: https://jiangwei.shinyapps.io/WinLoss/
+when: 1546632470.50315
+asMultiple: FALSE
+asStatic: FALSE

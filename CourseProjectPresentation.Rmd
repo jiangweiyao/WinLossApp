@@ -1,0 +1,55 @@
+---
+title: " Course Project: Shiny Application and Reproducible Pitch: Win-Loss Calculator"
+author: "JYao"
+date: "1/4/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Win Loss Percent Asymmetry
+
+One of the key points in successful stock market trading (as well as other forms of speculation) is understanding that an equal percent win does not cancel out an equal percent loss.
+```{r table, echo = FALSE}
+library("knitr")
+loss <- seq(0, 0.8, 0.2)
+win <- 1/(1-loss)-1
+df <- data.frame(loss, win)
+colnames(df) <- c("Percent.Loss", "Percent.Win")
+kable(df*100, caption='Percent Win Needed to Offset Percent Loss', digits = 0, align = "c")
+```
+
+## Win Loss App
+
+- The Win Loss App calculates the net return of one user entered percentage win and one user entered percentage loss on the left hand panel. 
+- A heat map is shown on the main panel, with the net return shown as a function of loss (x-axis) and win (y-axis) from 0 to 100%. The user entered values are plotted on the heat map. See heat map on the next slide. 
+- The more green the heatmap, the bigger the win. The more red the heatmap, the bigger the loss. White denotes near 0% return. 
+- The identity line is drawn on the heatmap. Notice the relationship between the identity line and the white region as loss percentage gets bigger. 
+
+## Heat map details
+
+```{r plot, echo = FALSE}
+library(ggplot2)
+    library(lattice)
+    loss <- seq(0,1,by=0.01)
+    win <- seq(0, 1,by=0.01)
+    grid <- expand.grid(x=loss, y=win)
+    grid$ret <- ((1 * (1-grid$x) * (1+grid$y))-1)*100       
+    colnames(grid) <- c("loss", "win", "return")
+ggplot(grid, (aes(loss * 100, win * 100)))+geom_tile(aes(fill = return))+scale_fill_gradient2(low = "red", mid = "white", high = "green")+
+            theme_bw() + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"))+
+            geom_abline(slope = 1, intercept = 0)+coord_cartesian(xlim = c(0,100), ylim = c(0,100))+scale_y_continuous(expand = c(0,0))+scale_x_continuous(expand = c(0,0))+
+            xlab("Percent Loss") +ylab("Percent Win")
+```
+
+## App Information
+
+Click on the link below to access the app  
+https://jiangwei.shinyapps.io/WinLoss/
+
+Click on the link below for the github repository
+https://github.com/jiangweiyao/WinLossApp
+
+
